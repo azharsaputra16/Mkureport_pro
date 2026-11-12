@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget id="id.muk.report" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>MKU Report</name>
+  <description>Aplikasi manajemen kegiatan Muda Krida Utama</description>
+  <author email="admin@mku-report.app" href="https://cordova.apache.org">MKU Report</author>
+  <content src="index.html" />
+  <access origin="*" />
+  <allow-navigation href="*" />
+  <allow-intent href="http://*/*" />
+  <allow-intent href="https://*/*" />
+  <preference name="AndroidXEnabled" value="true" />
+  <preference name="AndroidInsecureFileModeEnabled" value="false" />
+  <preference name="DisallowOverscroll" value="true" />
+  <preference name="Orientation" value="portrait" />
+  <preference name="SplashScreenDelay" value="1500" />
+  <preference name="StatusBarBackgroundColor" value="#f5c928" />
+  <preference name="StatusBarStyle" value="darkcontent" />
+  <platform name="android">
+    <preference name="AndroidWindowSplashScreenBackground" value="#fffbea" />
+    <icon src="www/assets/mku-logo.png" />
+  </platform>
+</widget>

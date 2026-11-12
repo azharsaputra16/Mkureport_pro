@@ -1,0 +1,25 @@
+{
+  "name": "mku-report",
+  "displayName": "MKU Report",
+  "version": "1.0.0",
+  "description": "MKU Report Cordova Android app",
+  "scripts": {
+    "build:android": "cordova build android",
+    "run:android": "cordova run android"
+  },
+  "devDependencies": {
+    "cordova": "^12.0.0",
+    "cordova-android": "^15.1.0",
+    "cordova-plugin-device": "^3.0.0",
+    "cordova-plugin-local-notification": "^1.2.3"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-device": {}
+    }
+  }
+}

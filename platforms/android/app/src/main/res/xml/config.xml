@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="id.muk.report" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="LocalNotification">
+        <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
+    </feature>
+    <name>MKU Report</name>
+    <description>Aplikasi manajemen kegiatan Muda Krida Utama</description>
+    <author email="admin@mku-report.app" href="https://cordova.apache.org">MKU Report</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-navigation href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <icon src="www/assets/mku-logo.png" />
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="GradlePluginKotlinEnabled" value="true" />
+    <preference name="AndroidXEnabled" value="true" />
+    <preference name="AndroidInsecureFileModeEnabled" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="SplashScreenDelay" value="1500" />
+    <preference name="StatusBarBackgroundColor" value="#f5c928" />
+    <preference name="StatusBarStyle" value="darkcontent" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#fffbea" />
+</widget>

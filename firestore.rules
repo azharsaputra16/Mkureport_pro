@@ -1,0 +1,151 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function loggedIn() {
+      return request.auth != null;
+    }
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userData() {
+      return get(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data;
+    }
+
+    function isActive() {
+      return loggedIn() && userData().status == 'aktif';
+    }
+
+    function isAdmin() {
+      return isActive() && userData().role == 'admin';
+    }
+
+    function isLeader() {
+      return isActive() && userData().role in [
+        'admin',
+        'ketua',
+        'wakil',
+        'sekretaris'
+      ];
+    }
+
+    function canManageAnnouncement() {
+      return isActive() && userData().role in [
+        'admin',
+        'ketua',
+        'wakil',
+        'sekretaris',
+        'bendahara'
+      ];
+    }
+
+    function isFinance() {
+      return isActive() && userData().role in [
+        'admin',
+        'ketua',
+        'bendahara'
+      ];
+    }
+
+    match /users/{userId} {
+      allow create: if loggedIn()
+        && request.auth.uid == userId;
+
+      allow read: if loggedIn();
+
+      allow update: if isAdmin() || (
+        loggedIn()
+        && request.auth.uid == userId
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.status == resource.data.status
+      );
+
+      allow delete: if isAdmin();
+
+      match /notificationTokens/{tokenId} {
+        allow create, update: if isActive()
+          && request.auth.uid == userId
+          && request.resource.data.keys().hasOnly([
+            'token',
+            'platform',
+            'updatedAt'
+          ])
+          && request.resource.data.token is string
+          && request.resource.data.token.size() <= 4096
+          && request.resource.data.platform == 'web';
+
+        allow delete: if isActive()
+          && request.auth.uid == userId;
+      }
+    }
+
+    match /info_random/{id} {
+      allow read: if signedIn();
+      allow create: if isActive();
+      allow update: if isActive();
+
+      allow delete: if isAdmin() || (
+        loggedIn()
+        && resource.data.uid == request.auth.uid
+      );
+    }
+
+    match /announcements/{id} {
+      allow read: if signedIn();
+      allow create, update, delete: if canManageAnnouncement();
+    }
+
+    match /tasks/{id} {
+      allow read: if signedIn();
+      allow create, update, delete: if isLeader();
+    }
+
+    match /reports/{id} {
+      allow read: if signedIn();
+      allow create: if isActive();
+
+      allow update, delete: if isAdmin() || (
+        loggedIn()
+        && resource.data.uid == request.auth.uid
+      );
+    }
+
+    match /agenda/{id} {
+      allow read: if signedIn();
+      allow create, update, delete: if isLeader();
+    }
+
+    match /finance/{id} {
+      allow read: if signedIn()
+        && userData().role in [
+          'admin',
+          'ketua',
+          'bendahara'
+        ];
+
+      allow create, update, delete: if isFinance();
+    }
+
+    match /blockBlastScores/{uid} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0;
+
+      allow update: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.score is int
+        && request.resource.data.score >= resource.data.score;
+
+      allow delete: if false;
+    }
+  }
+}
